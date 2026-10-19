@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- Declared here, not borrowed: on a store where this is the only WebRamos
+             module, a section on an undeclared tab breaks every configuration page. -->
+        <tab id="webramos" translate="label" sortOrder="500">
+            <label>Webmaster Ramos</label>
+        </tab>
+        <section id="webramos_google_tag_manager" translate="label" type="text" sortOrder="50"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Google Tag Manager</label>
+            <tab>webramos</tab>
+            <resource>WebRamos_GoogleTagManager::config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\Enabled</backend_model>
+                    <comment>Loads the container on every storefront page of this scope. Needs a container ID and at least one allowed host.</comment>
+                </field>
+                <field id="container_id" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container ID</label>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\ContainerId</backend_model>
+                    <comment>GTM-XXXXXXX, as shown in the Tag Manager workspace.</comment>
+                </field>
+                <field id="allowed_hosts" translate="label" type="textarea" sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Allowed Hosts</label>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\AllowedHosts</backend_model>
+                    <comment>
+                        <model>WebRamos\GoogleTagManager\Model\Config\Comment\AllowedHosts</model>
+                    </comment>
+                </field>
+                <field id="gtm_base_url" translate="label comment" type="text" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>GTM Script Base URL</label>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\GtmBaseUrl</backend_model>
+                    <comment>Where gtm.js and ns.html are served from. Keep the default unless the container is served from your own domain (server-side Tag Manager, Google tag gateway). HTTPS only; its host is added to the storefront Content Security Policy.</comment>
+                </field>
+                <field id="support_banner" type="text" sortOrder="999"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>WebRamos\GoogleTagManager\Block\Adminhtml\System\Config\SupportBanner</frontend_model>
+                </field>
+            </group>
+
+            <group id="csp" translate="label" type="text" sortOrder="20"
+                   showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Content Security Policy</label>
+                <field id="additional_hosts" translate="label comment" type="textarea" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Additional Tag Hosts</label>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\CspHosts</backend_model>
+                    <comment>Hosts the container's tags load scripts from or send data to, one per line – for example connect.facebook.net or *.clarity.ms. Added to script-src, connect-src and img-src on every storefront page, the strict checkout included. Hostnames only; a leading *. covers subdomains.</comment>
+                </field>
+                <field id="expose_nonce" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Expose Nonce to Custom HTML Tags</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Pushes the page's CSP nonce to the dataLayer as <code>cspNonce</code> on pages that have one (the checkout). In Tag Manager, read it with a Data Layer Variable and open Custom HTML tags that must run on the checkout with <code>&lt;script nonce="{{cspNonce}}"&gt;</code>.]]></comment>
+                </field>
+            </group>
+
+            <group id="consent" translate="label" type="text" sortOrder="30"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Consent Mode v2</label>
+                <field id="mode" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Consent Source</label>
+                    <source_model>WebRamos\GoogleTagManager\Model\Config\Source\ConsentMode</source_model>
+                    <comment>Off: no consent commands. Magento cookie notice: the defaults below, then all granted once the visitor accepts Magento's cookie notice (needs Cookie Restriction Mode under General &gt; Web &gt; Default Cookie Settings). External consent platform: the defaults below only; the platform sends the updates.</comment>
+                </field>
+                <field id="default_elsewhere" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default Outside EEA, UK and Switzerland</label>
+                    <source_model>WebRamos\GoogleTagManager\Model\Config\Source\ConsentDefault</source_model>
+                    <comment>Visitors in the EEA, the UK and Switzerland always start with every consent signal denied.</comment>
+                    <depends>
+                        <field id="mode" negative="1">off</field>
+                    </depends>
+                </field>
+                <field id="wait_for_update" translate="label comment" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Wait for Update (ms)</label>
+                    <backend_model>WebRamos\GoogleTagManager\Model\Config\Backend\WaitForUpdate</backend_model>
+                    <validate>validate-digits</validate>
+                    <comment>How long tags wait for a consent update before firing, 0–10000.</comment>
+                    <depends>
+                        <field id="mode" negative="1">off</field>
+                    </depends>
+                </field>
+                <field id="ads_data_redaction" translate="label comment" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Redact Ads Data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>While ad storage is denied, ad click identifiers are not sent to Google.</comment>
+                    <depends>
+                        <field id="mode" negative="1">off</field>
+                    </depends>
+                </field>
+                <field id="url_passthrough" translate="label comment" type="select" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>URL Passthrough</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>While cookies are denied, ad click information is carried in page URLs.</comment>
+                    <depends>
+                        <field id="mode" negative="1">off</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

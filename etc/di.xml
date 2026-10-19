@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Csp\Model\CompositePolicyCollector">
+        <arguments>
+            <argument name="collectors" xsi:type="array">
+                <item name="webramos_google_tag_manager" xsi:type="object" sortOrder="4">WebRamos\GoogleTagManager\Model\Csp\PolicyCollector\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

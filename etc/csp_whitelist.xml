@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<!--
+    Google hosts the container itself needs, independent of Magento_GoogleGtag being enabled.
+    Hosts of the tags inside the container are the merchant's: Additional Tag Hosts.
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="webramos_gtm" type="host">www.googletagmanager.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="webramos_gtm" type="host">www.googletagmanager.com</value>
+                <value id="webramos_gtm_ga" type="host">*.google-analytics.com</value>
+                <value id="webramos_gtm_ga4" type="host">*.analytics.google.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="webramos_gtm" type="host">www.googletagmanager.com</value>
+                <value id="webramos_gtm_ga" type="host">*.google-analytics.com</value>
+                <value id="webramos_gtm_ga4" type="host">*.analytics.google.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="webramos_gtm" type="host">www.googletagmanager.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

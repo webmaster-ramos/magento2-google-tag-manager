@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <webramos_google_tag_manager>
+            <general>
+                <enabled>0</enabled>
+                <container_id/>
+                <allowed_hosts/>
+                <gtm_base_url>https://www.googletagmanager.com</gtm_base_url>
+            </general>
+            <csp>
+                <additional_hosts/>
+                <expose_nonce>1</expose_nonce>
+            </csp>
+            <consent>
+                <mode>off</mode>
+                <default_elsewhere>granted</default_elsewhere>
+                <wait_for_update>500</wait_for_update>
+                <ads_data_redaction>1</ads_data_redaction>
+                <url_passthrough>0</url_passthrough>
+            </consent>
+        </webramos_google_tag_manager>
+    </default>
+</config>

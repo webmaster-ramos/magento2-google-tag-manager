@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+?>
+<?php
+/**
+ * GTM loader, first in <head>.
+ *
+ * The logic lives in web/js/loader.js and is inlined here, not loaded by src: Consent Mode
+ * defaults must be set before gtm.js in one synchronous pass. SecureHtmlRenderer gives the
+ * tag the request nonce where Magento runs CSP with inline scripts off (the checkout);
+ * elsewhere inline scripts are allowed and the page stays full-page-cacheable.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+/** @var \WebRamos\GoogleTagManager\ViewModel\Loader $viewModel */
+$viewModel = $block->getData('view_model');
+if ($viewModel->getSettings() === null) {
+    return;
+}
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag(
+    'script',
+    ['data-webramos-gtm' => $viewModel->getSettingsJson()],
+    $viewModel->getLoaderScript(),
+    false
+) ?>

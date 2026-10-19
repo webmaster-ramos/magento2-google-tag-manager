@@ -1,0 +1,22 @@
+<?php
+/**
+ * Copyright © 2026 Ruslan Moskalenko. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+?>
+<?php
+/**
+ * GTM fallback for browsers without JavaScript, right after <body>.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+/** @var \WebRamos\GoogleTagManager\ViewModel\Loader $viewModel */
+$viewModel = $block->getData('view_model');
+$url = $viewModel->getNoscriptUrl();
+if ($url === null) {
+    return;
+}
+?>
+<noscript><iframe src="<?= $escaper->escapeUrl($url) ?>" height="0" width="0" hidden></iframe></noscript>
